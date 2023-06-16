@@ -1,7 +1,10 @@
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1>Home page</h1>
+    <main className="min-h-screen">
+      <h1>Home page </h1>
+      <div className="text-lg uppercase text-center text-red-600 font-bold">
+        test auto deploy
+      </div>
     </main>
   );
 }
