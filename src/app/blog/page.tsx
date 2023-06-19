@@ -14,7 +14,7 @@ export default async function Blog() {
 
   return (
     <main className="min-h-screen">
-      <h1>Blog page (next2)</h1>
+      <h1>Blog page (next2) ci cd</h1>
 
       <div>Posts</div>
 
