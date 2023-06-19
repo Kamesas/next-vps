@@ -12,7 +12,7 @@ export default async function BlogItem(props: any) {
   const data = await getData(props);
   return (
     <main className="min-h-screen">
-      <h1>Blog Item</h1>
+      <h1>Blog Item next 2</h1>
       <div>id: {data.id}</div>
       <div>{data?.title}</div>
     </main>
