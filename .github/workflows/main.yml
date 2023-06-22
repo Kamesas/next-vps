@@ -1,27 +1,3 @@
-# name: Deploy
-
-# on:
-#   push:
-#     branches:
-#       - master
-
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v2
-# Setup key
-# - run: set -eu
-# - run: mkdir "$HOME/.ssh"
-# - run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > "$HOME/.ssh/key"
-# - run: chmod 600 "$HOME/.ssh/key"
-# Deploy
-# - run: pm2 stop next-vps
-# - run: cd app && rsync -e "ssh -p 20022 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . m71516@hostru04.fornex.org:/home/m71516/public_html/wp.maxgraph.ru
-# name: Deploy Next.js app with PM2
-
-#======================================================================
-
 on:
   push:
     branches: [master]
@@ -34,41 +10,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18.x
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build Next.js app
-        run: npm run build
-
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
-        # uses: appleboy/ssh-action@v0.1.3
-        # uses: actions/checkout@v3
-        # uses: v0.1.4
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          # passphrase: ""
           port: 22
           script: |
             cd /var/www/next-vps/
             pm2 stop next-vps
             git pull origin master
-            # npm install --only=prod
             npm install
             npm run build
             pm2 start next-vps
-            # pm2 restart all
-            # pm2 start npm --name next-vps -- start
-
-#======================================================
 
 # on:
 #   push:
@@ -85,7 +40,7 @@ jobs:
 #       - name: Set up Node.js
 #         uses: actions/setup-node@v2
 #         with:
-#           node-version: 16.x
+#           node-version: 18.x
 #           cache: "npm"
 
 #       - name: Install dependencies
@@ -102,12 +57,12 @@ jobs:
 #           key: ${{ secrets.SSH_PRIVATE_KEY }}
 #           port: 22
 #           script: |
-#             ssh -o "StrictHostKeyChecking=no" -i ~/.ssh/<PRIVATE_KEY> root@<IP> << 'EOF'
-#             # cd /var/www/next2/
-#             pm2 stop next2
-#             # git pull origin master
+#             cd /var/www/next-vps/
+#             pm2 stop next-vps
+#             git pull origin master
 #             # npm install --only=prod
-#             # npm install
-#             # npm run build
-#             # pm2 start npm --name next2 -- start
-#             EOF
+#             npm install
+#             npm run build
+#             pm2 start next-vps
+#             # pm2 restart all
+#             # pm2 start npm --name next-vps -- start
