@@ -1,0 +1,49 @@
+# nginx config file for Next.js App
+# place in /etc/nginx/sites-available/name_of_config_file
+
+server {
+    listen 80;
+    # server_name 31.220.50.201;
+    server_name atlana.xyz;
+
+    gzip on;
+    gzip_proxied any;
+    gzip_types application/javascript application/x-javascript text/css text/javascript;
+    gzip_comp_level 5;
+    gzip_buffers 16 8k;
+    gzip_min_length 256;
+
+    location /_next/static/ {
+        alias /var/www/next-vps/.next/static/;
+        expires 365d;
+        access_log off;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/atlana.xyz/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/atlana.xyz/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+
+server {
+    if ($host = atlana.xyz) {
+        return 301 https://$host$request_uri;
+        } # managed by Certbot
+
+        server_name atlana.xyz;
+
+        gzip on;
+        listen 80;
+        return 404; # managed by Certbot
+    }
+

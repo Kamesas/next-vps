@@ -1,0 +1,12 @@
+# nginx config file for html
+# place in /etc/nginx/sites-available/name_of_config_file
+
+server {
+
+  listen 80;
+  listen [::]:80;
+
+  server_name 31.220.50.201;
+  root /var/www/html;
+  index index.html index.htm index.nginx-debian.html;
+}
