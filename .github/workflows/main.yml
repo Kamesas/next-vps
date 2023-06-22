@@ -64,7 +64,9 @@ jobs:
             # npm install --only=prod
             npm install
             npm run build
-            pm2 start npm --name next-vps -- start
+            pm2 start next-vps
+            # pm2 restart all
+            # pm2 start npm --name next-vps -- start
 
 #======================================================
 
