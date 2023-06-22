@@ -62,9 +62,9 @@ jobs:
             pm2 stop next-vps
             git pull origin master
             # npm install --only=prod
-            # npm install
-            # npm run build
-            # pm2 start npm --name next-vps -- start
+            npm install
+            npm run build
+            pm2 start npm --name next-vps -- start
 
 #======================================================
 
