@@ -24,7 +24,7 @@
 
 on:
   push:
-    branches: [masters]
+    branches: [master]
 
 jobs:
   build:
