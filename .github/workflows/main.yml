@@ -1,3 +1,5 @@
+name: Deploy next.js
+
 on:
   push:
     branches: [master]
@@ -7,13 +9,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      # - name: Checkout code
+      #   uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18.x
+      # - name: Set up Node.js
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: 18.x
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
@@ -24,13 +26,14 @@ jobs:
           port: 22
           script: |
             cd /var/www/next-vps/
-            pm2 stop next-vps
             git pull origin master
-            npm install
+            git status
+            npm install --only=prod
             npm run build
-            pm2 start next-vps
+            pm2 restart next-vps
 
 # on:
+
 #   push:
 #     branches: [master]
 
