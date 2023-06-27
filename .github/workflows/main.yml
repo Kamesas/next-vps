@@ -1,39 +1,32 @@
-name: Deploy next.js
+name: Deploy
 
+# Trigger the workflow on push and
+# pull request events on the master branch
 on:
   push:
-    branches: [master]
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
 
+# Authenticate to the the server via ssh
+# and run our deployment script
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      # - name: Checkout code
-      #   uses: actions/checkout@v2
-
-      # - name: Set up Node.js
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version: 18.x
-
-      - name: Deploy to VPS
+      - uses: actions/checkout@v3
+      - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          script: |
-            cd /var/www/next-vps/
-            git pull origin master
-            git status
-            npm install --only=prod
-            npm run build
-            pm2 restart next-vps
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: "cd /var/www/next-vps && .scripts/deploy.sh"
+          # script: "cd ~/next-vps && ./.scripts/deploy.sh"
+# name: Deploy next.js
 
 # on:
-
 #   push:
 #     branches: [master]
 
@@ -42,20 +35,13 @@ jobs:
 #     runs-on: ubuntu-latest
 
 #     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
+#       # - name: Checkout code
+#       #   uses: actions/checkout@v2
 
-#       - name: Set up Node.js
-#         uses: actions/setup-node@v2
-#         with:
-#           node-version: 18.x
-#           cache: "npm"
-
-#       - name: Install dependencies
-#         run: npm install
-
-#       - name: Build Next.js app
-#         run: npm run build
+#       # - name: Set up Node.js
+#       #   uses: actions/setup-node@v2
+#       #   with:
+#       #     node-version: 18.x
 
 #       - name: Deploy to VPS
 #         uses: appleboy/ssh-action@master
@@ -66,11 +52,8 @@ jobs:
 #           port: 22
 #           script: |
 #             cd /var/www/next-vps/
-#             pm2 stop next-vps
 #             git pull origin master
-#             # npm install --only=prod
-#             npm install
+#             git status
+#             npm install --only=prod
 #             npm run build
-#             pm2 start next-vps
-#             # pm2 restart all
-#             # pm2 start npm --name next-vps -- start
+#             pm2 restart next-vps
