@@ -1,62 +1,70 @@
-name: Deploy
-
-# Trigger the workflow on push and
-# pull request events on the master branch
-on:
-  push:
-    branches: ["master"]
-  pull_request:
-    branches: ["master"]
-
-# Authenticate to the the server via ssh
-# and run our deployment script
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18.16.1
-      - uses: actions/checkout@v3
-      - name: Deploy to Server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          port: 22
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: "cd /var/www/next-vps && .scripts/deploy.sh"
-          # script: "cd ~/next-vps && ./.scripts/deploy.sh"
-# name: Deploy next.js
-
+# name: Deploy
 # on:
 #   push:
-#     branches: [master]
-
+#     branches: ["master"]
+#   pull_request:
+#     branches: ["master"]
 # jobs:
-#   build:
+#   deploy:
 #     runs-on: ubuntu-latest
-
 #     steps:
-#       # - name: Checkout code
-#       #   uses: actions/checkout@v2
-
-#       # - name: Set up Node.js
-#       #   uses: actions/setup-node@v2
-#       #   with:
-#       #     node-version: 18.x
-
-#       - name: Deploy to VPS
+#       - uses: actions/setup-node@v3
+#         with:
+#           node-version: "18.x"
+#       - uses: actions/checkout@v3
+#       - name: Deploy to Server
 #         uses: appleboy/ssh-action@master
 #         with:
 #           host: ${{ secrets.HOST }}
 #           username: ${{ secrets.USERNAME }}
-#           key: ${{ secrets.SSH_PRIVATE_KEY }}
 #           port: 22
-#           script: |
-#             cd /var/www/next-vps/
-#             git pull origin master
-#             git status
-#             npm install --only=prod
-#             npm run build
-#             pm2 restart next-vps
+#           key: ${{ secrets.SSH_PRIVATE_KEY }}
+# script: |
+# node -v
+# /root/.nvm/versions/node/v18.16.1
+# PATH=$PATH:/${{secrets.USERNAME}}/.npm-global/bin
+# PATH=$PATH:/root/${{secrets.USERNAME}}/.nvm/versions/node/v18.16.1/bin
+# PATH=$PATH:/root/.nvm/versions/node/v18.16.1/bin
+# PATH=$PATH:/root/${{secrets.USERNAME}}/.nvm/versions/node/v18.16.1/bin
+# node -v
+# "cd /var/www/next-vps && .scripts/deploy.sh"
+# script: "cd ~/next-vps && ./.scripts/deploy.sh"
+# script: "cd /var/www/next-vps && .scripts/deploy.sh"
+
+name: Deploy next.js
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.x
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            # PATH=$PATH:/root/${{secrets.USERNAME}}/.nvm/versions/node/v18.16.1/bin
+            PATH=$PATH:/root/.nvm/versions/node/v18.16.1/bin
+            node -v
+            pm2 -v
+            cd /var/www/next-vps/
+            git pull origin master
+            git status
+            npm install --only=prod
+            npm run build
+            pm2 restart next-vps
