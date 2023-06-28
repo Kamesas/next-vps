@@ -5,7 +5,7 @@ export default function Home() {
       <div className="text-lg uppercase text-center text-red-600 font-bold">
         deploy test
       </div>
-      <p>add "npm install --ignore-scripts"</p>
+      <p>add engines</p>
     </main>
   );
 }

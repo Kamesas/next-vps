@@ -8,8 +8,8 @@ git pull origin master
 echo "New changes copied to server !"
 
 echo "Installing Dependencies..."
-# npm install --yes
-npm install --ignore-scripts
+npm install --yes
+# npm install --ignore-scripts
 
 echo "Creating Production Build..."
 npm run build
