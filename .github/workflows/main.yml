@@ -58,8 +58,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            # PATH=$PATH:/root/${{secrets.USERNAME}}/.nvm/versions/node/v18.16.1/bin
-            PATH=$PATH:/root/.nvm/versions/node/v18.16.1/bin
+            PATH=$PATH:/${{secrets.USERNAME}}/.nvm/versions/node/v18.16.1/bin
             node -v
             pm2 -v
             cd /var/www/next-vps/
