@@ -3,9 +3,8 @@ export default function Home() {
     <main className="min-h-screen">
       <h1>Home page </h1>
       <div className="text-lg uppercase text-center text-red-600 font-bold">
-        deploy test
+        Next.js app working!
       </div>
-      <p>add engines</p>
     </main>
   );
 }
